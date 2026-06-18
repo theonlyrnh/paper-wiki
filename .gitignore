@@ -1,0 +1,79 @@
+# Environment & secrets
+.env
+.env.*
+!.env.example
+
+# Config with real endpoints or local-only overrides
+config.yaml
+config.local.yaml
+config.*.local.yaml
+
+# Data directories and generated output
+data/
+output/
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+dist/
+build/
+.eggs/
+
+# Conda / virtual envs
+.venv/
+venv/
+
+# Runtime files
+pids/
+logs/
+backups/
+.upload-snapshot/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Internal docs (not for public)
+docs/design/DESIGN.md
+docs/design/login-design.md
+docs/reviews/CODE_REVIEW.md
+docs/security/AI_UPLOAD_SECURITY.md
+
+# Internal tools (not for public)
+scripts/scan_sensitive.py
+
+# Internal handoff / planning docs
+docs/ingest-stability-first-batch-handoff.md
+superpowers/
+
+# Local-only tools
+scripts/cleanup_unknown.py
+
+# Internal context / planning docs
+PROJECT_CONTEXT.md
+
+# Local artifacts and private helper scripts
+artifacts/
+screenshots/
+PixPin_*.png
+local-only/
+ragflow-local-backend.sh
+
+# MinerU patch (local artifact)
+*.pth.patch
+
+# Local-only upload/sanitization tools
+upload-github.sh
+.upload-guard-backup/
+*.local
+*.local.sh
+.upload-secrets.local

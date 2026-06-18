@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="zh-CN" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Paper Wiki — 论文知识库</title>
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        gray: {
+                            750: '#2d3748',
+                            850: '#1a202c',
+                            925: '#131a2a',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- Inter font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="dns-prefetch" href="https://cdn.jsdelivr.net">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Design Tokens -->
+    <link rel="stylesheet" href="/static/styles/design-tokens.css?v=1">
+
+    <!-- KaTeX Math -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"></script>
+
+    <!-- Marked.js (Markdown rendering) -->
+    <script src="https://cdn.jsdelivr.net/npm/marked@15.0.0/marked.min.js"></script>
+
+    <!-- Prism.js (Code syntax highlighting) -->
+    <link href="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/prism.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
+
+    <style>
+        *, *::before, *::after {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            box-sizing: border-box;
+        }
+
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #3a4556; border-radius: 3px; }
+        ::-webkit-scrollbar-thumb:hover { background: #556477; }
+
+        html {
+            scroll-behavior: smooth;
+            height: 100%;
+            width: 100%;
+            max-width: 100%;
+            min-width: 0;
+            overflow: hidden;
+        }
+
+        /* Dark theme (default) */
+        body {
+            background: linear-gradient(135deg, #0f172a 0%, #1a2332 50%, #0f172a 100%);
+            height: 100%;
+            min-height: 100%;
+            width: 100%;
+            max-width: 100%;
+            min-width: 0;
+            overflow: hidden;
+        }
+        #sidebar {
+            background: linear-gradient(180deg, #131a2a 0%, #0f1724 100%);
+        }
+
+        /* Light theme */
+        html.light body,
+        body.light-theme {
+            background: linear-gradient(135deg, #f0f4f8 0%, #e2e8f0 50%, #f0f4f8 100%);
+            color: #1a202c;
+        }
+        html.light #sidebar {
+            background: linear-gradient(180deg, #ffffff 0%, #f7fafc 100%);
+            border-right-color: #e2e8f0 !important;
+        }
+        html.light .bg-gray-750,
+        html.light .bg-gray-850,
+        html.light .bg-gray-800\/80,
+        html.light .bg-gray-800\/90,
+        html.light .bg-gray-800,
+        html.light .bg-gray-800\/50 { background: rgba(255,255,255,0.9) !important; border-color: #e2e8f0 !important; }
+        html.light .bg-gray-900 { background: #f1f5f9 !important; }
+        html.light .bg-gray-900\/50 { background: #e2e8f0 !important; border-color: #cbd5e1 !important; }
+        html.light .bg-gray-700\/50,
+        html.light .bg-gray-700\/30,
+        html.light .bg-gray-700\/40,
+        html.light .bg-gray-700\/80 { background: #e2e8f0 !important; }
+        html.light .bg-gray-700 { background: #cbd5e1 !important; color: #1e293b !important; }
+        html.light .bg-gray-600 { background: #94a3b8 !important; color: #1e293b !important; }
+        html.light .bg-gray-600\/30 { background: rgba(148,163,184,0.4) !important; }
+        html.light .hover\:bg-gray-700\/40:hover,
+        html.light .hover\:bg-gray-700\/30:hover { background: #cbd5e1 !important; }
+        html.light .hover\:bg-gray-750:hover { background: #f8fafc !important; }
+        html.light .hover\:bg-gray-800\/50:hover { background: rgba(255,255,255,0.7) !important; }
+        html.light .text-white { color: #1e293b !important; }
+        html.light .text-gray-100 { color: #1e293b !important; }
+        html.light .text-gray-200 { color: #334155 !important; }
+        html.light .text-gray-300 { color: #475569 !important; }
+        html.light .text-gray-400 { color: #475569 !important; }
+        html.light .text-gray-500 { color: #64748b !important; }
+        html.light .text-gray-600 { color: #94a3b8 !important; }
+        html.light .text-blue-400 { color: #2563eb !important; }
+        html.light .text-blue-300 { color: #3b82f6 !important; }
+        html.light .text-blue-200 { color: #60a5fa !important; }
+        html.light .text-blue-500 { color: #1d4ed8 !important; }
+        html.light .text-emerald-400 { color: #059669 !important; }
+        html.light .text-emerald-300 { color: #10b981 !important; }
+        html.light .text-emerald-200 { color: #34d399 !important; }
+        html.light .text-emerald-500 { color: #047857 !important; }
+        html.light .text-red-400 { color: #dc2626 !important; }
+        html.light .text-red-500 { color: #b91c1c !important; }
+        html.light .text-red-300 { color: #ef4444 !important; }
+        html.light .text-amber-400 { color: #d97706 !important; }
+        html.light .text-amber-500 { color: #b45309 !important; }
+        html.light .text-amber-300 { color: #92400e !important; }
+        html.light .text-purple-400 { color: #7c3aed !important; }
+        html.light .text-purple-300 { color: #8b5cf6 !important; }
+        html.light .placeholder-gray-600::placeholder,
+        html.light .placeholder-gray-500::placeholder { color: #94a3b8 !important; }
+        html.light .border-gray-700\/50,
+        html.light .border-gray-700 { border-color: #cbd5e1 !important; }
+        html.light .border-gray-600 { border-color: #94a3b8 !important; }
+        html.light .border-gray-600\/50 { border-color: rgba(148,163,184,0.5) !important; }
+        html.light .border-gray-800\/50,
+        html.light .border-gray-800\/30 { border-color: #e2e8f0 !important; }
+        html.light .divide-gray-700\/50 > * { border-color: #e2e8f0 !important; }
+        html.light .status-pending { background: #e2e8f0 !important; color: #64748b !important; }
+        html.light .status-parsing { background: #dbeafe !important; color: #2563eb !important; }
+        html.light .status-ingesting { background: #ede9fe !important; color: #7c3aed !important; }
+        html.light .status-done { background: #dcfce7 !important; color: #059669 !important; }
+        html.light .status-failed { background: #fee2e2 !important; color: #dc2626 !important; }
+        html.light .markdown-body { color: #334155 !important; }
+        html.light .markdown-body h1,
+        html.light .markdown-body h2 { color: #1e293b !important; border-color: #cbd5e1 !important; }
+        html.light .markdown-body code { background: #1e293b !important; color: #f0abfc !important; }
+        html.light .markdown-body pre { background: #0f172a !important; border-color: #cbd5e1 !important; }
+        html.light .markdown-body pre code { color: #e2e8f0 !important; }
+        html.light .markdown-body blockquote { color: #64748b !important; }
+        html.light .markdown-body table th { background: #f1f5f9 !important; color: #1e293b !important; }
+        html.light .markdown-body table td { border-color: #cbd5e1 !important; }
+        html.light .bg-red-900\/20 { background: #fee2e2 !important; }
+        html.light .bg-red-900\/15 { background: #fee2e2 !important; }
+        html.light .bg-red-600\/20 { background: #fecaca !important; }
+        html.light .bg-red-600\/40 { background: #fca5a5 !important; }
+        html.light .bg-emerald-900\/20 { background: #dcfce7 !important; }
+        html.light .bg-blue-600\/20 { background: #dbeafe !important; }
+        html.light .bg-purple-600\/20,
+        html.light .bg-purple-900\/20 { background: #f3e8ff !important; }
+
+        /* Status badges */
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            padding: 2px 10px;
+            border-radius: 9999px;
+            font-size: 0.7rem;
+            font-weight: 500;
+            letter-spacing: 0.02em;
+        }
+        .status-pending  { background: rgba(148,163,184,0.15); color: #94a3b8; }
+        .status-parsing  { background: rgba(59,130,246,0.15); color: #93c5fd; }
+        .status-ingesting { background: rgba(139,92,246,0.15); color: #c4b5fd; }
+        .status-done     { background: rgba(16,185,129,0.15); color: #6ee7b7; }
+        .status-failed   { background: rgba(239,68,68,0.15); color: #fca5a5; }
+
+        /* Card hover effects */
+        .card-hover {
+            transition: all 0.2s ease;
+        }
+        .card-hover:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+        }
+
+        /* Mobile overflow guards for app shell and paper cards.
+           These do not replace local min-w-0 / flex-1 classes; they are a final
+           safety net for long paper titles, filenames, and generated metadata. */
+        .app-shell,
+        #main-content,
+        .page-shell,
+        .paper-list,
+        .paper-list-item,
+        .paper-card-body,
+        .paper-title,
+        .paper-meta {
+            min-width: 0;
+            max-width: 100%;
+        }
+        .app-shell,
+        #main-content,
+        .page-shell,
+        .paper-list,
+        .paper-list-item {
+            width: 100%;
+        }
+        .paper-card-body {
+            flex: 1 1 0%;
+        }
+        .paper-icon {
+            flex-shrink: 0;
+        }
+        .paper-title {
+            overflow-wrap: anywhere;
+            word-break: break-word;
+        }
+        .paper-meta {
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        /* Markdown body */
+        .markdown-body {
+            color: #d1d5db;
+            line-height: 1.85;
+            font-size: 0.95rem;
+        }
+        .markdown-body h1 { font-size: 1.6rem; font-weight: 700; margin-top: 2rem; margin-bottom: 1rem; color: #f1f5f9; border-bottom: 1px solid #374151; padding-bottom: 0.5rem; }
+        .markdown-body h2 { font-size: 1.25rem; font-weight: 600; margin-top: 1.75rem; margin-bottom: 0.75rem; color: #e2e8f0; }
+        .markdown-body h3 { font-size: 1.05rem; font-weight: 600; margin-top: 1.25rem; margin-bottom: 0.5rem; color: #cbd5e1; }
+        .markdown-body p { margin-bottom: 0.75rem; }
+        .markdown-body ul, .markdown-body ol { margin-left: 1.5rem; margin-bottom: 0.75rem; }
+        .markdown-body li { margin-bottom: 0.3rem; }
+        .markdown-body code { background: #1e293b; padding: 2px 6px; border-radius: 4px; font-size: 0.88em; color: #f0abfc; }
+        .markdown-body pre { background: #0f172a; padding: 1.25rem; border-radius: 12px; overflow-x: auto; margin-bottom: 1rem; border: 1px solid #1e293b; }
+        .markdown-body pre code { background: transparent; padding: 0; color: #e2e8f0; }
+        .markdown-body blockquote { border-left: 3px solid #6366f1; padding-left: 1rem; color: #9ca3af; margin-bottom: 0.75rem; font-style: italic; }
+        .markdown-body table { width: 100%; border-collapse: collapse; margin-bottom: 1rem; font-size: 0.9rem; }
+        .markdown-body th, .markdown-body td { border: 1px solid #374151; padding: 8px 14px; text-align: left; }
+        .markdown-body th { background: #1e293b; font-weight: 600; color: #e2e8f0; }
+        .markdown-body a { color: #818cf8; text-decoration: none; }
+        .markdown-body a:hover { color: #a5b4fc; text-decoration: underline; }
+        .markdown-body img { max-width: 100%; border-radius: 8px; margin: 0.75rem 0; }
+        .markdown-body hr { border-color: #334155; margin: 2rem 0; }
+
+        /* Fade-in animation */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(8px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-fade-in {
+            animation: fadeIn 0.3s ease-out;
+        }
+
+        /* Pulse dot */
+        @keyframes pulseDot {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.3; }
+        }
+        .loading-dot { animation: pulseDot 1.4s infinite; }
+        .loading-dot:nth-child(2) { animation-delay: 0.2s; }
+        .loading-dot:nth-child(3) { animation-delay: 0.4s; }
+
+        /* Mobile sidebar */
+        @media (max-width: 767px) {
+            #sidebar { transform: translateX(-100%); transition: transform 0.25s ease; }
+            #sidebar.sidebar-open { transform: translateX(0); }
+            html, body { overflow: hidden; }
+        }
+        @media (min-width: 768px) {
+            #sidebar { transform: none !important; }
+            #sidebar-backdrop { display: none !important; }
+        }
+        #sidebar-backdrop {
+            display: none;
+            position: fixed; inset: 0;
+            background: rgba(0,0,0,0.5); z-index: 19;
+        }
+        #sidebar-backdrop.active { display: block; }
+        html.dark #mobile-header { background: #0f172a; }
+        html.light #mobile-header { background: #ffffff; border-bottom-color: #e2e8f0; }
+    </style>
+</head>
+<body class="text-gray-100 antialiased">
+    <!-- Mobile top bar: flex by default, hidden on md+ -->
+    <div id="mobile-header" class="flex md:hidden fixed top-0 left-0 right-0 z-[25] h-13 items-center px-4 gap-3 border-b border-gray-800/50">
+        <button id="sidebar-toggle" class="text-gray-400 hover:text-white p-1.5 rounded-lg hover:bg-gray-800/50 transition-colors" aria-label="打开导航">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+            </svg>
+        </button>
+        <span class="text-white font-semibold text-sm">论文知识库</span>
+    </div>
+
+    <!-- Sidebar backdrop (mobile) -->
+    <div id="sidebar-backdrop"></div>
+
+    <div class="app-shell flex h-screen min-h-0 w-full max-w-full min-w-0 overflow-hidden">
+        <!-- Sidebar -->
+        <aside id="sidebar"
+               class="w-60 border-r border-gray-800/50 flex flex-col fixed h-full z-20 shadow-2xl">
+        </aside>
+
+        <!-- Main Content -->
+        <main class="flex-1 min-w-0 min-h-0 w-full max-w-full md:ml-60 p-4 md:p-8 pt-16 md:pt-8 h-screen overflow-hidden">
+            <div id="main-content" class="h-full w-full max-w-full md:max-w-5xl min-w-0 mx-auto overflow-y-auto overflow-x-hidden">
+                <div class="flex items-center justify-center min-h-[60vh]">
+                    <div class="text-center">
+                        <div class="text-5xl mb-4 animate-bounce">📚</div>
+                        <div class="text-gray-400 font-medium">加载中...</div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Scripts -->
+    <script src="/static/api.js?v=6"></script>
+    <script src="/static/components/toast.js?v=1"></script>
+    <script src="/static/components/sidebar.js?v=5"></script>
+    <script src="/static/components/markdown-renderer.js?v=4"></script>
+    <script src="/static/components/pixel-uploader.js?v=4"></script>
+    <script src="/static/pages/home.js?v=8"></script>
+    <script src="/static/pages/papers.js?v=8"></script>
+    <script src="/static/pages/paper-detail.js?v=5"></script>
+    <script src="/static/pages/search.js?v=5"></script>
+    <script src="/static/pages/graph.js?v=3"></script>
+    <script src="/static/pages/chat.js?v=5"></script>
+    <script src="/static/pages/settings.js?v=3"></script>
+    <script src="/static/pages/login.js?v=4"></script>
+    <script src="/static/pages/register.js?v=4"></script>
+    <script src="/static/app.js?v=6"></script>
+
+    <!-- Mobile sidebar toggle -->
+    <script>
+        function openSidebar() {
+            document.getElementById('sidebar').classList.add('sidebar-open');
+            document.getElementById('sidebar-backdrop').classList.add('active');
+        }
+        function closeSidebar() {
+            document.getElementById('sidebar').classList.remove('sidebar-open');
+            document.getElementById('sidebar-backdrop').classList.remove('active');
+        }
+        document.addEventListener('DOMContentLoaded', () => {
+            document.getElementById('sidebar-toggle')?.addEventListener('click', openSidebar);
+            document.getElementById('sidebar-backdrop')?.addEventListener('click', closeSidebar);
+        });
+        window.addEventListener('hashchange', closeSidebar);
+    </script>
+
+    <!-- Global keyboard shortcuts -->
+    <script>
+        document.addEventListener('keydown', (e) => {
+            if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
+                e.preventDefault();
+                // Navigate to search page and focus input
+                const onSearch = () => {
+                    location.hash = '#/search';
+                    setTimeout(() => {
+                        const input = document.querySelector('#search-input');
+                        if (input) input.focus();
+                    }, 100);
+                };
+                // If app router handles hash changes
+                if (typeof App !== 'undefined' && App.navigate) {
+                    App.navigate('search');
+                    setTimeout(() => {
+                        const input = document.querySelector('#search-input');
+                        if (input) input.focus();
+                    }, 200);
+                } else {
+                    onSearch();
+                }
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,145 @@
+/* ================================================
+   Paper Wiki — Design Tokens
+   Centralized design system for consistent theming
+   ================================================ */
+
+:root {
+    /* ── Primary Brand Colors (Indigo) ── */
+    --primary-50: #eef2ff;
+    --primary-100: #e0e7ff;
+    --primary-400: #818cf8;
+    --primary-500: #6366f1;
+    --primary-600: #4f46e5;
+    --primary-700: #4338ca;
+
+    /* ── Semantic Colors ── */
+    --success: #10b981;
+    --success-dark: #059669;
+    --success-bg: rgba(16, 185, 129, 0.12);
+
+    --warning: #f59e0b;
+    --warning-dark: #d97706;
+    --warning-bg: rgba(245, 158, 11, 0.12);
+
+    --error: #ef4444;
+    --error-dark: #dc2626;
+    --error-bg: rgba(239, 68, 68, 0.12);
+
+    --info: #3b82f6;
+    --info-dark: #2563eb;
+    --info-bg: rgba(59, 130, 246, 0.12);
+
+    /* ── Surface Layers (Dark Mode) ── */
+    --surface-0: #0a0f1a;
+    --surface-1: #0f172a;
+    --surface-2: #1e293b;
+    --surface-3: #334155;
+    --surface-4: #475569;
+
+    /* ── Text ── */
+    --text-primary: #f1f5f9;
+    --text-secondary: #cbd5e1;
+    --text-tertiary: #94a3b8;
+    --text-disabled: #64748b;
+
+    /* ── Spacing (8px grid) ── */
+    --space-1: 0.25rem;
+    --space-2: 0.5rem;
+    --space-3: 0.75rem;
+    --space-4: 1rem;
+    --space-5: 1.25rem;
+    --space-6: 1.5rem;
+    --space-8: 2rem;
+
+    /* ── Border Radius ── */
+    --radius-sm: 0.375rem;
+    --radius-md: 0.5rem;
+    --radius-lg: 0.75rem;
+    --radius-xl: 1rem;
+    --radius-full: 9999px;
+
+    /* ── Shadows ── */
+    --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.3);
+    --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.4);
+    --shadow-lg: 0 10px 25px rgba(0, 0, 0, 0.5);
+    --shadow-glow: 0 0 20px rgba(99, 102, 241, 0.3);
+
+    /* ── Transitions ── */
+    --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+    --ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-fast: 150ms var(--ease-in-out);
+    --transition-base: 200ms var(--ease-in-out);
+    --transition-slow: 300ms var(--ease-in-out);
+}
+
+/* ── Skeleton Loading Animation ── */
+@keyframes shimmer {
+    0% { background-position: -200% 0; }
+    100% { background-position: 200% 0; }
+}
+
+.skeleton {
+    background: linear-gradient(
+        90deg,
+        var(--surface-2) 25%,
+        var(--surface-3) 50%,
+        var(--surface-2) 75%
+    );
+    background-size: 200% 100%;
+    animation: shimmer 2s infinite;
+    border-radius: var(--radius-md);
+}
+
+.skeleton-text {
+    height: 0.9rem;
+    margin-bottom: 0.5rem;
+    border-radius: var(--radius-sm);
+}
+.skeleton-text.short { width: 60%; }
+.skeleton-text.medium { width: 80%; }
+
+.skeleton-title {
+    height: 1.3rem;
+    width: 45%;
+    margin-bottom: 0.75rem;
+}
+
+.skeleton-card {
+    background: var(--surface-2);
+    border-radius: var(--radius-lg);
+    padding: var(--space-6);
+    border: 1px solid var(--surface-3);
+}
+
+/* ── Toast Animation ── */
+@keyframes toastSlideIn {
+    from { transform: translateX(120%); opacity: 0; }
+    to { transform: translateX(0); opacity: 1; }
+}
+
+/* ── Micro-interactions ── */
+.btn-hover-lift {
+    transition: all var(--transition-base);
+}
+.btn-hover-lift:hover {
+    transform: translateY(-1px);
+    box-shadow: var(--shadow-md);
+}
+.btn-hover-lift:active {
+    transform: scale(0.98);
+}
+
+/* ── Focus Ring ── */
+*:focus-visible {
+    outline: 2px solid var(--primary-500);
+    outline-offset: 2px;
+}
+
+/* ── Prism.js Overrides (Dark Mode) ── */
+pre[class*="language-"] {
+    background: #0d1117 !important;
+    border: 1px solid var(--surface-3) !important;
+    border-radius: var(--radius-lg) !important;
+    margin: 0.75rem 0 !important;
+    font-size: 0.85rem !important;
+}

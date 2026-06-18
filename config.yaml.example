@@ -1,0 +1,64 @@
+server:
+  host: "127.0.0.1"
+  port: 19828
+
+mineru:
+  api_url: "http://localhost:8888"
+  backend: "hybrid-engine"
+  effort: "medium"
+  timeout: 300
+
+llm:
+  provider: "openai"
+  api_base: "${LLM_API_BASE}"      # e.g. https://api.openai.com/v1
+  api_key: "${LLM_API_KEY}"
+  model: "${LLM_MODEL}"             # e.g. gpt-4o, your-llm-model
+  max_tokens: 393216
+  max_context_tokens: 1000000
+  temperature: 0.3
+  timeout:
+    connect: 10
+    read_analyze: 360
+    read_generate: 300
+    write: 60
+    pool: 30
+  retry:
+    max_attempts: 3
+    backoff_seconds: [5, 15, 45]
+
+embedding:
+  provider: "openai"                # OpenAI-compatible API
+  api_base: "https://api.openai.com/v1"  # Replace with your embedding API endpoint
+  api_key: "${EMBEDDING_API_KEY}"
+  model: "text-embedding-3-large"   # e.g. your-embedding-model, bge-m3
+  dimensions: 2048
+
+search:
+  context_window: 32000
+  budget:
+    wiki: 0.60
+    history: 0.20
+    index: 0.05
+    system: 0.15
+
+graph:
+  signals:
+    direct_link: 3.0
+    source_overlap: 4.0
+    adamic_adar: 1.5
+    type_affinity: 1.0
+
+storage:
+  wiki_dir: "data/wiki"
+  raw_dir: "data/raw"
+  evidence_dir: "data/evidence"
+  db_path: "data/papers.db"
+  vectors_dir: "data/vectors"
+  raw_pdf_quota_mb: 1000
+
+ingest:
+  max_concurrency: 1
+  llm_max_concurrency: 1
+  parse_max_concurrency: 1
+  embedding_max_concurrency: 2
+  stale_after_seconds: 1800
